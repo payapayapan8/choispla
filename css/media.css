@@ -1,8 +1,39 @@
 @charset "utf-8";
 
-@media (max-width: 599px){
+
+@media (max-width: 1024px){
+    .roulette-wrapper{
+        flex-wrap: wrap;
+        align-items: center;
+    }
+
+    .player-data{
+        width: 45%;
+        height: fit-content;
+        margin-bottom: 20px;
+    }
+
+    .odai-wrapper{
+        margin-bottom: 30px;
+    }
+
+    .result-all{
+        flex-wrap: wrap;
+        align-items: center;
+    }
+
+    .player-result{
+        width: 45%;
+        margin-bottom: 40px;
+    }
+}
+
+@media (max-width: 670px){
     .message{
         text-align: center;
+    }
+    .message h2{
+        font-size: 20px;
     }
     .setting{
         flex-direction: column;
@@ -32,30 +63,6 @@
 
     .player-result{
         width: 90%;
-        margin-bottom: 40px;
-    }
-}
-
-
-@media (max-width: 1024px) {
-    .roulette-wrapper{
-        flex-wrap: wrap;
-        align-items: center;
-    }
-
-    .player-data{
-        width: 45%;
-        height: 250px;
-        margin-bottom: 20px;
-    }
-
-    .result-all{
-        flex-wrap: wrap;
-        align-items: center;
-    }
-
-    .player-result{
-        width: 45%;
         margin-bottom: 40px;
     }
 }
