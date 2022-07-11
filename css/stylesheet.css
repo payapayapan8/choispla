@@ -35,6 +35,14 @@ h2{
     display: none;
 }
 
+.error{
+    color: #f31e7e;
+    font-weight: bold;
+    text-align: center;
+    margin-bottom: 10px;
+    display: none;
+}
+
 
 /*headerのCSS*/
 .header-wrapper{

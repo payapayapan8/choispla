@@ -1,5 +1,5 @@
 //ブキデータ
-const weapons1= [
+const weapons= [
     { name: 'スプラシューター' , main: 'シューター' , sub: 'クイックボム' , sp: 'スーパーチャクチ' },
     { name: 'スプラシューターコラボ' , main: 'シューター' , sub: 'スプラッシュボム' , sp: 'ジェットパック' },
     { name: 'スプラシューターベッチュー' , main: 'シューター' , sub: 'キューバンボム' , sp: 'マルチミサイル' },
@@ -130,10 +130,21 @@ const weapons1= [
     { name: 'スパイガジェットソレーラ' , main: 'シェルター' , sub: 'スプラッシュボム' , sp: 'イカスフィア' },
     { name: 'スパイガジェットベッチュー' , main: 'シェルター' , sub: 'トーピード' , sp: 'インクアーマー' }
 ];
-const weapons2 = weapons1.slice();
-const weapons3 = weapons1.slice();
-const weapons4 = weapons1.slice();
+
+//ブキリストの複製
+const weapons1 = weapons.slice();
+const weapons2 = weapons.slice();
+const weapons3 = weapons.slice();
+const weapons4 = weapons.slice();
 const objWeapons = ['',weapons1,weapons2,weapons3,weapons4];
+
+
+//それぞれの履歴
+const history1 = [];
+const history2 = [];
+const history3 = [];
+const history4 = [];
+const histories = ['',history1,history2,history3,history4]
 
 
 //お題データ
@@ -184,6 +195,8 @@ for(let i=0; i<clickOdai.length; i++){
 
 //ルーレット処理
 
+
+//お題が指定されたときに結果に出すブキを絞る処理
 function filtering(i){
     var firstFilter = document.getElementById('odai' + i).value;
     var secondFilter = document.getElementById('second-odai' + i).value;
@@ -210,30 +223,59 @@ function filtering(i){
     }
 }
 
-
+//ランダムでブキを出すルーレット本体
 function roulette(filtered){
     var random = Math.floor( Math.random() * filtered.length);
     var result = filtered[random];
     return result;
 }
 
+//それぞれのブキリストから既出のブキを消す処理
+function deleteList(result, j){
+    let memorySet = document.getElementById('memory');
+    if(memorySet.checked == true){
+        for(let i = 0; i < objWeapons[j].length; i++){
+             if(objWeapons[j][i].name === result.name){
+                objWeapons[j].splice(i,1);
+            }
+        }
+    }  
+}
 
-const history1 = [];
-const history2 = [];
-const history3 = [];
-const history4 = [];
-const histories = ['',history1,history2,history3,history4]
+//チェックが外されたとき、それぞれのブキリストをリセットする処理
+function unchecked(j){
+    let memorySet = document.getElementById('memory');
+    if(memorySet.checked == false){
+        objWeapons[j] = weapons.slice();
+    }
+}
+
+
 
 const start = document.getElementById('start-btn');
 
+//ルーレット開始ボタンを押したときの処理
 start.addEventListener('click', function(){
     const history = [''];
+    //出せるブキがリストにあるか確認する
     for(j=1; j <= 4; j++){
+        unchecked(j);
         let result = roulette(filtering(j),j);
+        if(result == undefined){
+            let error = document.getElementById('no-weapon');
+            error.classList.add('block');
+            return; //出せるブキがなければエラーメッセージを出して処理を終了
+        }
+    }
+    //出せるブキがあればルーレット開始
+    for(j=1; j <= 4; j++){
+        document.getElementById('no-weapon').classList.remove('block'); //エラーメッセージが出ていれば消す
+        let result = roulette(filtering(j),j); //ルーレットの結果
+        deleteList(result, j); //それぞれのブキリストから出たブキを消す
         let box = document.getElementById('result'+ j);
-        box.textContent = result.name;
+        box.textContent = result.name; //結果をUIに表示
         history.push(result);
-        histories[j].push(history[j]);
+        histories[j].push(history[j]); //それぞれの履歴に結果を入れる
     }
 });
 
